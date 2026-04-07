@@ -178,7 +178,7 @@ func CreateExampleConfig(path string) error {
 	themeList := strings.Join(theme.ListThemes(), ", ")
 
 	exampleConfig := fmt.Sprintf(`# snitch configuration file
-# See https://github.com/you/snitch for full documentation
+# See https://github.com/karol-broda/snitch for full documentation
 
 [defaults]
 # Default refresh interval for watch/stats/trace commands
