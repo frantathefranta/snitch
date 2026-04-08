@@ -19,6 +19,7 @@ const (
 	SortByRaddr      SortField = "raddr"
 	SortByRport      SortField = "rport"
 	SortByInterface  SortField = "if"
+	SortByVRF        SortField = "vrf"
 	SortByRxBytes    SortField = "rx_bytes"
 	SortByTxBytes    SortField = "tx_bytes"
 	SortByRttMs      SortField = "rtt_ms"
@@ -93,6 +94,8 @@ func compareConnections(a, b Connection, field SortField) bool {
 		return a.Rport < b.Rport
 	case SortByInterface:
 		return a.Interface < b.Interface
+	case SortByVRF:
+		return a.VRF < b.VRF
 	case SortByRxBytes:
 		return a.RxBytes < b.RxBytes
 	case SortByTxBytes:

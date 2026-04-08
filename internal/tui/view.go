@@ -311,6 +311,7 @@ func (m model) renderDetail() string {
 		{"local", fmt.Sprintf("%s:%s", localAddr, localPort)},
 		{"remote", fmt.Sprintf("%s:%s", remoteAddr, remotePort)},
 		{"interface", c.Interface},
+		{"vrf", c.VRF},
 		{"inode", fmt.Sprintf("%d", c.Inode)},
 	}
 

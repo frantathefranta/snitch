@@ -18,6 +18,7 @@ type Connection struct {
 	Raddr      string    `json:"raddr"`
 	Rport      int       `json:"rport"`
 	Interface  string    `json:"interface"`
+	VRF        string    `json:"vrf,omitempty"`
 	RxBytes    int64     `json:"rx_bytes"`
 	TxBytes    int64     `json:"tx_bytes"`
 	RttMs      float64   `json:"rtt_ms"`

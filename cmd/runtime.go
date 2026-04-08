@@ -193,6 +193,8 @@ func applyFilter(filters *collector.FilterOptions, key, value string) error {
 		filters.Contains = value
 	case "if", "interface":
 		filters.Interface = value
+	case "vrf":
+		filters.VRF = value
 	case "mark":
 		filters.Mark = value
 	case "namespace":
@@ -222,7 +224,7 @@ Filters are specified in key=value format. For example:
   snitch ls proto=tcp state=established
 
 Available filters:
-  proto, state, pid, proc, lport, rport, user, laddr, raddr, contains, if, mark, namespace, inode, since`
+  proto, state, pid, proc, lport, rport, user, laddr, raddr, contains, if, vrf, mark, namespace, inode, since`
 
 // addFilterFlags adds the common filter flags to a command.
 func addFilterFlags(cmd *cobra.Command) {

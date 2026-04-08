@@ -203,6 +203,7 @@ func getFieldMap(c collector.Connection) map[string]string {
 		"raddr":     raddr,
 		"rport":     rport,
 		"if":        c.Interface,
+		"vrf":       c.VRF,
 		"rx_bytes":  strconv.FormatInt(c.RxBytes, 10),
 		"tx_bytes":  strconv.FormatInt(c.TxBytes, 10),
 		"rtt_ms":    strconv.FormatFloat(c.RttMs, 'f', 1, 64),

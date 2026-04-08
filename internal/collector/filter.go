@@ -20,6 +20,7 @@ type FilterOptions struct {
 	IPv4      bool
 	IPv6      bool
 	Interface string
+	VRF       string
 	Mark      string
 	Namespace string
 	Inode     int64
@@ -31,7 +32,7 @@ func (f *FilterOptions) IsEmpty() bool {
 	return f.Proto == "" && f.State == "" && f.Pid == 0 && f.Proc == "" &&
 		f.Lport == 0 && f.Rport == 0 && f.User == "" && f.UID == 0 &&
 		f.Laddr == "" && f.Raddr == "" && f.Contains == "" &&
-		f.Interface == "" && f.Mark == "" && f.Namespace == "" && f.Inode == 0 &&
+		f.Interface == "" && f.VRF == "" && f.Mark == "" && f.Namespace == "" && f.Inode == 0 &&
 		f.Since.IsZero() && f.SinceRel == 0 && !f.IPv4 && !f.IPv6
 }
 
@@ -76,6 +77,9 @@ func (f *FilterOptions) Matches(c Connection) bool {
 		return false
 	}
 	if f.Interface != "" && !strings.EqualFold(c.Interface, f.Interface) {
+		return false
+	}
+	if f.VRF != "" && !strings.EqualFold(c.VRF, f.VRF) {
 		return false
 	}
 	if f.Mark != "" && !strings.EqualFold(c.Mark, f.Mark) {

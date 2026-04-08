@@ -80,25 +80,27 @@ func (dc *DefaultCollector) GetConnections() ([]Connection, error) {
 		return nil, fmt.Errorf("failed to build inode map: %w", err)
 	}
 
+	netInfo := buildNetworkInfo()
+
 	var connections []Connection
 
 	parseStart := time.Now()
-	tcpConns, err := parseProcNet("/proc/net/tcp", "tcp", 4, inodeMap)
+	tcpConns, err := parseProcNet("/proc/net/tcp", "tcp", 4, inodeMap, netInfo)
 	if err == nil {
 		connections = append(connections, tcpConns...)
 	}
 
-	tcpConns6, err := parseProcNet("/proc/net/tcp6", "tcp6", 6, inodeMap)
+	tcpConns6, err := parseProcNet("/proc/net/tcp6", "tcp6", 6, inodeMap, netInfo)
 	if err == nil {
 		connections = append(connections, tcpConns6...)
 	}
 
-	udpConns, err := parseProcNet("/proc/net/udp", "udp", 4, inodeMap)
+	udpConns, err := parseProcNet("/proc/net/udp", "udp", 4, inodeMap, netInfo)
 	if err == nil {
 		connections = append(connections, udpConns...)
 	}
 
-	udpConns6, err := parseProcNet("/proc/net/udp6", "udp6", 6, inodeMap)
+	udpConns6, err := parseProcNet("/proc/net/udp6", "udp6", 6, inodeMap, netInfo)
 	if err == nil {
 		connections = append(connections, udpConns6...)
 	}
@@ -314,7 +316,7 @@ func getProcessInfo(pid int) (*processInfo, error) {
 	return info, nil
 }
 
-func parseProcNet(path, proto string, ipVersion int, inodeMap map[int64]*processInfo) ([]Connection, error) {
+func parseProcNet(path, proto string, ipVersion int, inodeMap map[int64]*processInfo, netInfo networkInfo) ([]Connection, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -380,7 +382,8 @@ func parseProcNet(path, proto string, ipVersion int, inodeMap map[int64]*process
 			conn.User = procInfo.user
 		}
 
-		conn.Interface = guessNetworkInterface(localAddr)
+		conn.Interface = netInfo.lookupInterface(localAddr)
+		conn.VRF = netInfo.lookupVRF(conn.Interface)
 
 		connections = append(connections, conn)
 	}
